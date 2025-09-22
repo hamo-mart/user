@@ -19,15 +19,18 @@ public class UserResponse {
     private Set<String> roles;
 
     @QueryProjection
-    public UserResponse(Long id, String email, String nickname, String profileImageUrl) {
+    public UserResponse(Long id, String email, String nickname) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
-        this.profileImageUrl = profileImageUrl;
 
     }
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }

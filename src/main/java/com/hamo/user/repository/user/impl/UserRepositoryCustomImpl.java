@@ -40,8 +40,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         new QUserResponse(
                                 user.id,
                                 user.email,
-                                user.nickname,
-                                null
+                                user.nickname
                         )
                 ).from(user)
                 .orderBy(QueryDslOrderUtils.getOrderSpecifiers(pageable, pathUser).toArray(new OrderSpecifier[0]))
@@ -85,8 +84,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 new QUserResponse(
                         user.id,
                         user.email,
-                        user.nickname,
-                        null
+                        user.nickname
                 )
         ).from(user).where(user.id.eq(userId))
                 .fetchOne();
@@ -97,8 +95,9 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .join(role).on(role.id.eq(userRole.role.id))
                 .where(userRole.user.id.eq(userId))
                 .fetch());
-        Objects.requireNonNull(userResponse).setRoles(userRoles);
-
+        if (userResponse != null) {
+            userResponse.setRoles(userRoles);
+        }
         return userResponse;
     }
 }

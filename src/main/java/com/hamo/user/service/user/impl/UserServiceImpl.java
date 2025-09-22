@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
                 null);
         //TODO 이미지 저장구현(이미지서버와 통신)
 
-        userRepository.save(user);
-        return toResponse(user, null);
+        User save = userRepository.save(user);
+        return toResponse(save);
     }
     @Transactional
     @Override
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         user.updateProfileImageId(null);
 
 
-        return toResponse(user, null);
+        return toResponse(user);
     }
 
     @Transactional
@@ -67,12 +67,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserById(userId);
     }
 
-    private UserResponse toResponse(User user, String profileImage) {
+    private UserResponse toResponse(User user) {
         return new UserResponse(
                 user.getId(),
                 user.getEmail(),
-                user.getNickname(),
-                profileImage
+                user.getNickname()
         );
     }
 }
