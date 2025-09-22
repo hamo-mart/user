@@ -61,4 +61,5 @@ public class User {
     public void updateProfileImageId(Long profileImageId) {
         this.profileImageId = profileImageId;
     }
+
 }
