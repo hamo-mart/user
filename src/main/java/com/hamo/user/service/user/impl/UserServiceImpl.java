@@ -10,6 +10,7 @@ import com.hamo.user.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
     public UserResponse createLocalUser(UserRegisterRequest request) {
 
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+
         User user = User.createLocalUser(
                 request.getEmail(),
-                request.getPassword(),
+                encodedPassword,
                 request.getNickname(),
                 null);
         //TODO 이미지 저장구현(이미지서버와 통신)
@@ -40,8 +44,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
+        String encodePassword = passwordEncoder.encode(request.getPassword());
+
         user.updateNickname(request.getNickname());
-        user.updatePassword(request.getPassword());
+        user.updatePassword(encodePassword);
 
         //TODO 이미지 저장구현(이미지서버와 통신)
         user.updateProfileImageId(null);
